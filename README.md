@@ -36,13 +36,26 @@ UI Suggestion
     - Video name
     - Author
     - Categories
-    - Highest quality format (Values: ```<format-name> <quality>```, example: "two 1080p")
-    - Release Date
+    - Highest quality format
+    - Release Date (Can be random data)
     - Options (Buttons: ```Edit Delete```)
 - The table/list can be searched
 - **Optional**: The list can be sorted
 
-Note: The "Highest quality format" is a made up label for the format where “res" property is the highest and “size" property is the biggest
+The "Highest quality format" is a made-up label for the format that has the biggest "size" and the highest "res".
+Take a look at the following database entry:
+
+```
+"formats": {
+    "one": { "res": "1080p", "size": 1000 },
+    "two": { "res": "720p", "size": 2000 },
+    "three": { "res": "720p", "size": 900 }
+},
+```
+
+So, to choose the biggest format here, we take the one that has the biggest size (in this case "two"). In cases where there are multiple formats with the same "size", we use the "res" value to decide which one to get (Note: "1080p" is bigger than "720p", "720p" is bigger than "480p" and so on).
+
+With the biggest format selected we then form the label as "format_name res". So for this particular example, the generated label should be "two 720p" (The format name is "two", and its res is "720p").
 
 ## Add a video
 UI Suggestion
