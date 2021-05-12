@@ -9,7 +9,7 @@ Mockups in this task are just a design suggestion – you are free to implement 
 
 - The backend can be accessed via http://localhost:3001
 - It runs with a package called ***json-server***, and the data comes from the ***db.json*** file
-- The JSON structure of the ***db.json*** file was twisted a bit on purpose. Please do not change the original DB structure. Of course, on the front-end side you are free to transform and manipulate the data in any way you feel appropriate
+- The JSON structure of the ***db.json*** file is twisted on purpose. Please do not change this original structure. The contents of the file are going to change once the application is running and you start adding, editing or deleting records, but the structure has to remain, so you'll have to find a way to edit the records without losing this structure
 - Material-UI was added to the starter template. If you feel more comforable with another UI framework, you can change it. You can add all the styles that you need
 
 ## Steps for the challenge
