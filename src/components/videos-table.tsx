@@ -1,36 +1,35 @@
-import React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { ProcessedVideo } from '../common/interfaces';
+import type { ProcessedVideo } from '../common/interfaces';
+import styles from './videos-table.module.css';
 
-interface VideosTableProps {
-    videos: ProcessedVideo[];
-}
-
-export const VideosTable: React.FC<VideosTableProps> = ({ videos }) => {
-  return (
-    <TableContainer component={Paper} style={{ marginTop: '40px' }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Video Name</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Categories</TableCell>
-            <TableCell>Options</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {videos.map((video) => (
-            <TableRow key={video.id}>
-              <TableCell component="th" scope="row">
-                {video.name}
-              </TableCell>
-              <TableCell>{video.author}</TableCell>
-              <TableCell>{video.categories.join(', ')}</TableCell>
-              <TableCell> {/* add buttons here as needed */}  </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+type VideosTableProps = {
+  videos: ProcessedVideo[];
 };
+
+export const VideosTable = ({ videos }: VideosTableProps) => (
+  <div className={styles.wrapper}>
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          <th>Video Name</th>
+          <th>Author</th>
+          <th>Categories</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {videos.map((video) => (
+          <tr key={video.id}>
+            <td>{video.name}</td>
+            <td>{video.author}</td>
+            <td>{video.categories.join(', ')}</td>
+            <td>
+              <button>Edit</button>
+              <button>Delete</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);

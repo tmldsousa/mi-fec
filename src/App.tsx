@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { AppBar, Container, Toolbar, Typography } from '@mui/material';
-import { VideosTable } from './components/videos-table';
-import { getVideos } from './services/videos';
-import { ProcessedVideo } from './common/interfaces';
+import { useEffect, useState } from 'react';
 
-const App: React.FC = () => {
+import type { ProcessedVideo } from './common/interfaces';
+import { getVideos } from './services/videos';
+import { VideosTable } from './components/videos-table';
+import { Button } from './components/button';
+import styles from './app.module.css';
+
+export const App = () => {
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
 
   useEffect(() => {
-    getVideos()
-      .then((videos) => {
-        setVideos(videos);
-      });
+    getVideos().then(setVideos);
   }, []);
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Videos</Typography>
-        </Toolbar>
-      </AppBar>
-      <Container>
+      <header className={styles.header}>
+        Videos
+        <Button primary>Add video</Button>
+      </header>
+
+      <main className={styles.main}>
+        <h1>VManager Demo v0.0.1</h1>
         <VideosTable videos={videos} />
-      </Container>
+      </main>
+
+      <footer className={styles.footer}>VManager Demo v0.0.1</footer>
     </>
   );
 };
-
-export default App;
