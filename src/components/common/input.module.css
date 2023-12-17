@@ -1,0 +1,25 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.wrapper > input {
+  margin: 0;
+  max-width: 100%;
+  flex: 1 0 auto;
+  outline: 0;
+  text-align: left;
+  padding: 0.5em 1em;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  font-size: 1rem;
+
+  border-width: 1px;
+  border-color: var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+.wrapper > input:active,
+.wrapper > input:focus {
+  border-color: var(--active);
+}

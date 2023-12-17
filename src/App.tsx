@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { ProcessedVideo } from './common/interfaces';
 import { getVideos } from './services/videos';
 import { VideosTable } from './components/videos-table';
-import { Button } from './components/button';
+import { Button } from './components/common/button';
 import styles from './app.module.css';
 
 export const App = () => {
