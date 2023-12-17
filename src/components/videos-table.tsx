@@ -4,9 +4,11 @@ import { Table } from './common/table';
 
 type VideosTableProps = {
   videos: ProcessedVideo[];
+  onEditVideo?: (videoId: ProcessedVideo) => void;
+  onDeleteVideo?: (videoId: ProcessedVideo) => void;
 };
 
-export const VideosTable = ({ videos }: VideosTableProps) => (
+export const VideosTable = ({ videos, onEditVideo, onDeleteVideo }: VideosTableProps) => (
   <Table
     data={videos}
     columns={[
@@ -17,10 +19,10 @@ export const VideosTable = ({ videos }: VideosTableProps) => (
       { header: 'Release Date', accessorKey: 'releaseDate' },
       {
         header: 'Options',
-        cell: () => (
+        cell: (context) => (
           <div>
-            <Button>Edit</Button>
-            <Button>Delete</Button>
+            <Button onClick={onEditVideo ? () => onEditVideo(context.row.original) : undefined}>Edit</Button>
+            <Button onClick={onDeleteVideo ? () => onDeleteVideo(context.row.original) : undefined}>Delete</Button>
           </div>
         ),
       },
