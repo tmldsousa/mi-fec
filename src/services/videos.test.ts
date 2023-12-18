@@ -294,7 +294,7 @@ describe('videos service', () => {
           ],
         },
       ];
-      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const updateAuthorSpy = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => true);
       const getAuthorByIdSpy = jest
         .spyOn(authors, 'getAuthorById')
         .mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors[0])));
@@ -310,7 +310,7 @@ describe('videos service', () => {
       // Assert
       const expectedResult = true;
       const expectedGetAuthorById = test.authorId;
-      const expectedCreateOrUpdateAuthor: Author = {
+      const expectedupdateAuthor: Author = {
         id: mockAuthors[0].id,
         name: mockAuthors[0].name,
         videos: [
@@ -331,14 +331,14 @@ describe('videos service', () => {
       };
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthorSpy).toBeCalledTimes(1);
-      expect(createOrUpdateAuthorSpy).toBeCalledWith(expectedCreateOrUpdateAuthor);
+      expect(updateAuthorSpy).toBeCalledTimes(1);
+      expect(updateAuthorSpy).toBeCalledWith(expectedupdateAuthor);
       expect(result).toBe(expectedResult);
     });
 
     it("should throw if author doesn't exist", async () => {
       // Arrange
-      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const updateAuthorSpy = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => true);
       const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => undefined);
 
       // Act
@@ -354,7 +354,7 @@ describe('videos service', () => {
       const expectedGetAuthorById = test.authorId;
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthorSpy).not.toBeCalled();
+      expect(updateAuthorSpy).not.toBeCalled();
       await expect(async () => await promise).rejects.toThrowError();
     });
   });
@@ -392,7 +392,7 @@ describe('videos service', () => {
         .spyOn(authors, 'getAuthorById')
         .mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors[0])));
       const getAuthorsSpy = jest.spyOn(authors, 'getAuthors').mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors)));
-      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const updateAuthorSpy = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => true);
 
       // Act
       const test: SubmitVideo = {
@@ -406,7 +406,7 @@ describe('videos service', () => {
       // Assert
       const expectedResult = true;
       const expectedGetAuthorById = test.authorId;
-      const expectedCreateOrUpdateAuthor: Author = {
+      const expectedupdateAuthor: Author = {
         id: mockAuthors[0].id,
         name: mockAuthors[0].name,
         videos: [
@@ -423,8 +423,8 @@ describe('videos service', () => {
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
       expect(getAuthorsSpy).toBeCalledTimes(1);
-      expect(createOrUpdateAuthorSpy).toBeCalledTimes(1);
-      expect(createOrUpdateAuthorSpy).toBeCalledWith(expectedCreateOrUpdateAuthor);
+      expect(updateAuthorSpy).toBeCalledTimes(1);
+      expect(updateAuthorSpy).toBeCalledWith(expectedupdateAuthor);
       expect(result).toBe(expectedResult);
     });
 
@@ -466,7 +466,7 @@ describe('videos service', () => {
         .spyOn(authors, 'getAuthorById')
         .mockImplementation(async (id) => JSON.parse(JSON.stringify(mockAuthors.find((author) => author.id === id))));
       const getAuthorsSpy = jest.spyOn(authors, 'getAuthors').mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors)));
-      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const updateAuthorSpy = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => true);
 
       // Act
       const test: SubmitVideo = {
@@ -480,7 +480,7 @@ describe('videos service', () => {
       // Assert
       const expectedResult = true;
       const expectedGetAuthorById = test.authorId;
-      const expectedCreateOrUpdateAuthor1: Author = {
+      const expectedupdateAuthor1: Author = {
         id: mockAuthors[1].id,
         name: mockAuthors[1].name,
         videos: mockAuthors[1].videos.concat({
@@ -491,7 +491,7 @@ describe('videos service', () => {
           releaseDate: mockAuthors[0].videos[0].releaseDate,
         }),
       };
-      const expectedCreateOrUpdateAuthor2: Author = {
+      const expectedupdateAuthor2: Author = {
         id: mockAuthors[0].id,
         name: mockAuthors[0].name,
         videos: mockAuthors[0].videos.slice(1),
@@ -499,8 +499,8 @@ describe('videos service', () => {
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
       expect(getAuthorsSpy).toBeCalledTimes(1);
-      expect(createOrUpdateAuthorSpy).toBeCalledTimes(2);
-      expect(createOrUpdateAuthorSpy.mock.calls).toEqual([[expectedCreateOrUpdateAuthor1], [expectedCreateOrUpdateAuthor2]]);
+      expect(updateAuthorSpy).toBeCalledTimes(2);
+      expect(updateAuthorSpy.mock.calls).toEqual([[expectedupdateAuthor1], [expectedupdateAuthor2]]);
       expect(result).toBe(expectedResult);
     });
   });
@@ -535,7 +535,7 @@ describe('videos service', () => {
         },
       ];
       const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => JSON.parse(JSON.stringify(mock[0])));
-      const createOrUpdateAuthor = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const updateAuthor = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => true);
 
       // Act
       const testVideoId = mock[0].videos[0].id;
@@ -545,18 +545,18 @@ describe('videos service', () => {
       // Assert
       const expectedResult = true;
       const expectedGetAuthorById = testAuthorId;
-      const expectedCreateOrUpdateAuthor = { ...mock[0], videos: mock[0].videos.slice(1) };
+      const expectedupdateAuthor = { ...mock[0], videos: mock[0].videos.slice(1) };
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthor).toBeCalledTimes(1);
-      expect(createOrUpdateAuthor).toBeCalledWith(expectedCreateOrUpdateAuthor);
+      expect(updateAuthor).toBeCalledTimes(1);
+      expect(updateAuthor).toBeCalledWith(expectedupdateAuthor);
       expect(result).toBe(expectedResult);
     });
 
     it("should return false if author doesn't exist", async () => {
       // Arrange
       const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => undefined);
-      const createOrUpdateAuthor = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => {
+      const updateAuthor = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => {
         throw new Error();
       });
 
@@ -570,7 +570,7 @@ describe('videos service', () => {
       const expectedGetAuthorById = testAuthorId;
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthor).not.toBeCalled();
+      expect(updateAuthor).not.toBeCalled();
       expect(result).toBe(expectedResult);
     });
 
@@ -594,7 +594,7 @@ describe('videos service', () => {
         },
       ];
       const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => JSON.parse(JSON.stringify(mock[0])));
-      const createOrUpdateAuthor = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => {
+      const updateAuthor = jest.spyOn(authors, 'updateAuthor').mockImplementation(async () => {
         throw new Error();
       });
 
@@ -608,7 +608,7 @@ describe('videos service', () => {
       const expectedGetAuthorById = testAuthorId;
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthor).not.toBeCalled();
+      expect(updateAuthor).not.toBeCalled();
       expect(result).toBe(expectedResult);
     });
   });

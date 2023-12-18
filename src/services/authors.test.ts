@@ -105,7 +105,7 @@ describe('authors service', () => {
     });
   });
 
-  describe('createOrUpdateAuthor', () => {
+  describe('updateAuthor', () => {
     it('should call the correct endpoint and return response json', async () => {
       // Arrange
       const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({ ok: true }) as any);
@@ -135,7 +135,7 @@ describe('authors service', () => {
           },
         ],
       };
-      const promise = authors.createOrUpdateAuthor(test);
+      const promise = authors.updateAuthor(test);
       const result = await promise;
 
       // Assert

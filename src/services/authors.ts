@@ -12,7 +12,7 @@ export const getAuthorById = async (authorId: Author['id']): Promise<Author | un
   return (await response.json()) as Author;
 };
 
-export const createOrUpdateAuthor = async (author: Author): Promise<boolean> => {
+export const updateAuthor = async (author: Author): Promise<boolean> => {
   const response = await fetch(`${process.env.REACT_APP_API}/authors/${author.id}`, {
     method: 'PUT',
     headers: {

@@ -1,15 +1,15 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Author, Category, SubmitVideo } from '../../common/interfaces';
+import { Author, Category, SubmitVideo, VideoWithAuthor } from '../../common/interfaces';
 import { VideoForm } from '../video-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAuthors } from '../../services/authors';
 import { getCategories } from '../../services/categories';
-import { updateVideo } from '../../services/videos';
+import { getVideoByIdWithAuthor, updateVideo } from '../../services/videos';
 
 export const EditVideoPage = () => {
   const { videoId: paramVideoId } = useParams();
-
   const navigate = useNavigate();
+
   // Parse video id. If it is not a valid number, go back
   useEffect(() => {
     if (!paramVideoId || !/^\d+$/.test(paramVideoId)) {
@@ -30,12 +30,14 @@ export const EditVideoPage = () => {
     getAuthors().then(setAuthors);
   }, []);
 
+  // Load event data
+  const [videoWithAuthor, setVideoWithAuthor] = useState<VideoWithAuthor>();
+  useEffect(() => {
+    getVideoByIdWithAuthor(videoId).then(setVideoWithAuthor);
+  }, [videoId]);
+
   // Get video data to edit
   const formData = useMemo(() => {
-    const videoWithAuthor = authors
-      ?.flatMap((author) => author.videos.map((video) => ({ author, video })))
-      .find(({ video }) => video.id === videoId);
-
     return videoWithAuthor
       ? ({
           authorId: videoWithAuthor.author.id,
@@ -44,7 +46,7 @@ export const EditVideoPage = () => {
           id: videoWithAuthor.video.id,
         } as SubmitVideo)
       : undefined;
-  }, [authors, videoId]);
+  }, [videoWithAuthor]);
 
   const goBack = useCallback(() => {
     navigate(-1);
@@ -64,7 +66,9 @@ export const EditVideoPage = () => {
     [goBack]
   );
 
-  return !categories || !authors || !formData ? (
+  const isLoading = !categories || !authors || !formData;
+
+  return isLoading ? (
     <>Loading...</>
   ) : (
     <>

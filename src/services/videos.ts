@@ -1,5 +1,5 @@
 import { getCategories } from './categories';
-import { getAuthors, createOrUpdateAuthor, getAuthorById } from './authors';
+import { getAuthors, updateAuthor, getAuthorById } from './authors';
 import type { Author, Category, ProcessedVideo, SubmitVideo, Video, VideoFormats, VideoWithAuthor } from '../common/interfaces';
 import { formatDate } from './utils';
 
@@ -43,7 +43,7 @@ export const createVideo = async (submitVideo: SubmitVideo) => {
   author.videos.push(newVideo);
 
   // Update author on database
-  return await createOrUpdateAuthor(author);
+  return await updateAuthor(author);
 };
 
 export const updateVideo = async (submitVideo: SubmitVideo) => {
@@ -61,7 +61,6 @@ export const updateVideo = async (submitVideo: SubmitVideo) => {
 
   // Get currently store video and it's author
   const videoWithAuthor = await getVideoByIdWithAuthor(videoId);
-
   if (!videoWithAuthor) {
     throw new Error('Video not found');
   }
@@ -83,7 +82,7 @@ export const updateVideo = async (submitVideo: SubmitVideo) => {
     newAuthor.videos = newAuthor.videos.concat(newVideo);
 
     // Update both authors
-    const results = await Promise.all([createOrUpdateAuthor(newAuthor), createOrUpdateAuthor(previousAuthor)]);
+    const results = await Promise.all([updateAuthor(newAuthor), updateAuthor(previousAuthor)]);
 
     // Return true if all results are true
     return results.every((result) => result);
@@ -93,7 +92,7 @@ export const updateVideo = async (submitVideo: SubmitVideo) => {
     newAuthor.videos[videoIndex] = newVideo;
 
     // Update author on database
-    return await createOrUpdateAuthor(newAuthor);
+    return await updateAuthor(newAuthor);
   }
 };
 
@@ -115,7 +114,7 @@ export const deleteVideo = async (videoId: Video['id'], authorId: Author['id']) 
   author.videos = author.videos.filter((video) => video.id !== videoId);
 
   // Update author on database
-  return await createOrUpdateAuthor(author);
+  return await updateAuthor(author);
 };
 
 const mapProcessedVideos = (authors: Author[], categories: Category[]): ProcessedVideo[] => {
@@ -137,8 +136,10 @@ const mapProcessedVideo = (video: Video, author: Author, categories: Category[])
 const getCategoryNames = (categoryIds: number[], categories: Category[]) =>
   categoryIds.map((categoryId) => categories.find((category) => category.id === categoryId)?.name ?? '').filter((category) => !!category);
 
+/**
+ * Gets the highest quality format (Highest size, if equal then highest resolution)
+ */
 const getHighestQualityFormat = (formats: VideoFormats): string => {
-  // Find the highest quality format (Highest size, if equal then highest resolution)
   const highestQualityFormat = Object.entries(formats)
     .map(([key, format]) => ({ key, ...format }))
     .reduce((previousValue, currentValue) => {
