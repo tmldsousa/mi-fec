@@ -40,7 +40,7 @@ export const ListVideosPage = () => {
     // TODO: better dialog
     // TODO: loading indicator
     if (window.confirm(`Are you sure you want to delete video "${video.name}"?`)) {
-      deleteVideo(video.id).then((result) => setLoadVideos(result));
+      deleteVideo(video.id, video.authorId).then((result) => setLoadVideos(result));
     }
   }, []);
 

@@ -30,8 +30,9 @@ export interface Author {
 
 export interface ProcessedVideo {
   id: number;
-  name: string;
+  authorId: number;
   author: string;
+  name: string;
   highestQualityFormat: string;
   releaseDate: string;
   categories: string[];

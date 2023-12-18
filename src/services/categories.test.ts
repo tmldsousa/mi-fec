@@ -27,7 +27,8 @@ describe('categories service', () => {
       const result = await promise;
 
       // Assert
-      expect(fetchMock).toHaveBeenCalledWith(`${process.env.REACT_APP_API}/categories`);
+      const expectedUrl = `${process.env.REACT_APP_API}/categories`;
+      expect(fetchMock).toHaveBeenCalledWith(expectedUrl);
       expect(result).toEqual(mock);
     });
   });
