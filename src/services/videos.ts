@@ -1,7 +1,7 @@
 import { getCategories } from './categories';
 import { getAuthors, updateAuthor, getAuthorById } from './authors';
 import type { Author, Category, ProcessedVideo, SubmitVideo, Video, VideoFormats, VideoWithAuthor } from '../common/interfaces';
-import { formatDate } from './utils';
+import { format } from 'date-fns/format';
 
 export const getVideos = async (): Promise<ProcessedVideo[]> => {
   const [categories, authors] = await Promise.all([getCategories(), getAuthors()]);
@@ -31,7 +31,7 @@ export const createVideo = async (submitVideo: SubmitVideo) => {
   // New video initial data
   const newVideo = {
     id: Date.now(), // :) number id's are a bad idea anyway
-    releaseDate: formatDate(),
+    releaseDate: format(new Date(), 'dd-MM-yyyy'),
     formats: {
       one: { res: '1080p', size: 1000 },
     },
