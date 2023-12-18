@@ -4,7 +4,7 @@ import { getAuthors } from '../../services/authors';
 import { getCategories } from '../../services/categories';
 import { VideoForm } from '../video-form';
 import { useNavigate } from 'react-router-dom';
-import { createOrUpdateVideo } from '../../services/videos';
+import { createVideo } from '../../services/videos';
 
 export const NewVideoPage = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const NewVideoPage = () => {
   // On form submit, update video and navigate back (if successful)
   const onSubmit = useCallback(
     async (values: SubmitVideo) => {
-      const success = await createOrUpdateVideo(values);
+      const success = await createVideo(values);
 
       if (success) {
         navigate(-1);

@@ -11,6 +11,11 @@ export interface Video {
   releaseDate: string;
 }
 
+export interface VideoWithAuthor {
+  video: Video;
+  author: Author;
+}
+
 export interface VideoFormats {
   [key: string]: {
     res: string;

@@ -17,7 +17,17 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/src",
+      "webRoot": "${workspaceFolder}/src"
+    },
+    {
+      "name": "Debug Jest",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["test", "--runInBand", "--no-cache", "--watch"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

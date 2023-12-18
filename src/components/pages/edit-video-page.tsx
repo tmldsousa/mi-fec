@@ -4,7 +4,7 @@ import { VideoForm } from '../video-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAuthors } from '../../services/authors';
 import { getCategories } from '../../services/categories';
-import { createOrUpdateVideo } from '../../services/videos';
+import { updateVideo } from '../../services/videos';
 
 export const EditVideoPage = () => {
   const { videoId: paramVideoId } = useParams();
@@ -53,7 +53,7 @@ export const EditVideoPage = () => {
   // On form submit, update video and navigate back (if successful)
   const onSubmit = useCallback(
     async (values: SubmitVideo) => {
-      const success = await createOrUpdateVideo(values);
+      const success = await updateVideo(values);
 
       if (success) {
         goBack();

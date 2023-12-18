@@ -54,28 +54,6 @@
       "name": "Li Sun Chi",
       "videos": [
         {
-          "id": 3,
-          "catIds": [
-            4
-          ],
-          "name": "Fun",
-          "formats": {
-            "one": {
-              "res": "720p",
-              "size": 730
-            },
-            "two": {
-              "res": "720p",
-              "size": 4500
-            },
-            "three": {
-              "res": "720p",
-              "size": 2005
-            }
-          },
-          "releaseDate": "2018-08-10"
-        },
-        {
           "id": 4,
           "catIds": [
             1,
@@ -114,7 +92,44 @@
     {
       "id": 3,
       "name": "Steven Scorsese",
-      "videos": []
+      "videos": [
+        {
+          "id": 3,
+          "catIds": [
+            1
+          ],
+          "name": "Fun?",
+          "formats": {
+            "one": {
+              "res": "720p",
+              "size": 730
+            },
+            "two": {
+              "res": "720p",
+              "size": 4500
+            },
+            "three": {
+              "res": "720p",
+              "size": 2005
+            }
+          },
+          "releaseDate": "2018-08-10"
+        },
+        {
+          "id": 1702919919653,
+          "releaseDate": "18-12-2023",
+          "formats": {
+            "one": {
+              "res": "1080p",
+              "size": 1000
+            }
+          },
+          "name": "test",
+          "catIds": [
+            4
+          ]
+        }
+      ]
     }
   ]
 }

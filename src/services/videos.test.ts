@@ -265,8 +265,8 @@ describe('videos service', () => {
     });
   });
 
-  describe('createOrUpdateVideo', () => {
-    it("should create a video if it doesn't exist", async () => {
+  describe('createVideo', () => {
+    it("should add a video to the end of the author's video list", async () => {
       // Arrange
       const mockAuthors: Author[] = [
         {
@@ -305,7 +305,7 @@ describe('videos service', () => {
         authorId: 1,
         catIds: [1, 2],
       };
-      const result = await videos.createOrUpdateVideo(test);
+      const result = await videos.createVideo(test);
 
       // Assert
       const expectedResult = true;
@@ -336,7 +336,31 @@ describe('videos service', () => {
       expect(result).toBe(expectedResult);
     });
 
-    it('should update a video if it already exists', async () => {
+    it("should throw if author doesn't exist", async () => {
+      // Arrange
+      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
+      const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => undefined);
+
+      // Act
+      const test: SubmitVideo = {
+        id: 1,
+        name: 'Test 1',
+        authorId: 1,
+        catIds: [1, 2],
+      };
+      const promise = videos.createVideo(test);
+
+      // Assert
+      const expectedGetAuthorById = test.authorId;
+      expect(getAuthorByIdSpy).toBeCalledTimes(1);
+      expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
+      expect(createOrUpdateAuthorSpy).not.toBeCalled();
+      await expect(async () => await promise).rejects.toThrowError();
+    });
+  });
+
+  describe('updateVideo', () => {
+    it("should update a video if it's the same author", async () => {
       // Arrange
       const mockAuthors: Author[] = [
         {
@@ -348,7 +372,7 @@ describe('videos service', () => {
               catIds: [1],
               name: 'Video 1',
               formats: {
-                high: { res: '1080p', size: 1000 },
+                low: { res: '480p', size: 400 },
               },
               releaseDate: '2001-01-01',
             },
@@ -364,10 +388,11 @@ describe('videos service', () => {
           ],
         },
       ];
-      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
       const getAuthorByIdSpy = jest
         .spyOn(authors, 'getAuthorById')
         .mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors[0])));
+      const getAuthorsSpy = jest.spyOn(authors, 'getAuthors').mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors)));
+      const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
 
       // Act
       const test: SubmitVideo = {
@@ -376,7 +401,7 @@ describe('videos service', () => {
         authorId: 1,
         catIds: [1, 2],
       };
-      const result = await videos.createOrUpdateVideo(test);
+      const result = await videos.updateVideo(test);
 
       // Assert
       const expectedResult = true;
@@ -397,31 +422,86 @@ describe('videos service', () => {
       };
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
+      expect(getAuthorsSpy).toBeCalledTimes(1);
       expect(createOrUpdateAuthorSpy).toBeCalledTimes(1);
       expect(createOrUpdateAuthorSpy).toBeCalledWith(expectedCreateOrUpdateAuthor);
       expect(result).toBe(expectedResult);
     });
 
-    it("should throw if author doesn't exist", async () => {
+    it('should remove video from previous author and add to the new one', async () => {
       // Arrange
+      const mockAuthors: Author[] = [
+        {
+          id: 1,
+          name: 'Author 1',
+          videos: [
+            {
+              id: 1,
+              catIds: [1],
+              name: 'Video 1',
+              formats: {
+                low: { res: '480p', size: 400 },
+              },
+              releaseDate: '2001-01-01',
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: 'Author 2',
+          videos: [
+            {
+              id: 2,
+              catIds: [2],
+              name: 'Video 2',
+              formats: {
+                high: { res: '1080p', size: 1000 },
+              },
+              releaseDate: '2001-01-01',
+            },
+          ],
+        },
+      ];
+      const getAuthorByIdSpy = jest
+        .spyOn(authors, 'getAuthorById')
+        .mockImplementation(async (id) => JSON.parse(JSON.stringify(mockAuthors.find((author) => author.id === id))));
+      const getAuthorsSpy = jest.spyOn(authors, 'getAuthors').mockImplementation(async () => JSON.parse(JSON.stringify(mockAuthors)));
       const createOrUpdateAuthorSpy = jest.spyOn(authors, 'createOrUpdateAuthor').mockImplementation(async () => true);
-      const getAuthorByIdSpy = jest.spyOn(authors, 'getAuthorById').mockImplementation(async () => undefined);
 
       // Act
       const test: SubmitVideo = {
         id: 1,
         name: 'Test 1',
-        authorId: 1,
+        authorId: 2,
         catIds: [1, 2],
       };
-      const promise = videos.createOrUpdateVideo(test);
+      const result = await videos.updateVideo(test);
 
       // Assert
+      const expectedResult = true;
       const expectedGetAuthorById = test.authorId;
+      const expectedCreateOrUpdateAuthor1: Author = {
+        id: mockAuthors[1].id,
+        name: mockAuthors[1].name,
+        videos: mockAuthors[1].videos.concat({
+          id: test.id as number,
+          catIds: test.catIds,
+          name: test.name,
+          formats: mockAuthors[0].videos[0].formats,
+          releaseDate: mockAuthors[0].videos[0].releaseDate,
+        }),
+      };
+      const expectedCreateOrUpdateAuthor2: Author = {
+        id: mockAuthors[0].id,
+        name: mockAuthors[0].name,
+        videos: mockAuthors[0].videos.slice(1),
+      };
       expect(getAuthorByIdSpy).toBeCalledTimes(1);
       expect(getAuthorByIdSpy).toBeCalledWith(expectedGetAuthorById);
-      expect(createOrUpdateAuthorSpy).not.toBeCalled();
-      await expect(async () => await promise).rejects.toThrowError();
+      expect(getAuthorsSpy).toBeCalledTimes(1);
+      expect(createOrUpdateAuthorSpy).toBeCalledTimes(2);
+      expect(createOrUpdateAuthorSpy.mock.calls).toEqual([[expectedCreateOrUpdateAuthor1], [expectedCreateOrUpdateAuthor2]]);
+      expect(result).toBe(expectedResult);
     });
   });
 
