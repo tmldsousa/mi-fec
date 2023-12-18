@@ -6,12 +6,14 @@ import { useLayoutContext } from '../contexts/layout.context';
 import { Button } from '../common/button';
 import { useNavigate } from 'react-router-dom';
 import { deleteVideo } from '../../services/videos';
+import { Modal } from '../common/modal';
 
 export const ListVideosPage = () => {
   const navigateTo = useNavigate();
   const { setRenderActions } = useLayoutContext();
   const [videos, setVideos] = useState<ProcessedVideo[]>([]);
   const [loadVideos, setLoadVideos] = useState(true);
+  const [deleteVideoDialogOpen, setDeleteVideoDialogOpen] = useState<ProcessedVideo | undefined>();
 
   // Load videos from service
   useEffect(() => {
@@ -36,18 +38,32 @@ export const ListVideosPage = () => {
     },
     [navigateTo]
   );
+
   const onDeleteVideo = useCallback((video: ProcessedVideo) => {
-    // TODO: better dialog
-    // TODO: loading indicator
-    if (window.confirm(`Are you sure you want to delete video "${video.name}"?`)) {
-      deleteVideo(video.id, video.authorId).then((result) => setLoadVideos(result));
-    }
+    setDeleteVideoDialogOpen(video);
   }, []);
+
+  const onDeleteVideoConfirm = useCallback(async () => {
+    if (deleteVideoDialogOpen) {
+      await deleteVideo(deleteVideoDialogOpen.id, deleteVideoDialogOpen.authorId);
+
+      setDeleteVideoDialogOpen(undefined);
+      setLoadVideos(true);
+    }
+  }, [deleteVideoDialogOpen]);
 
   return (
     <>
       <h1>VManager Demo v0.0.1</h1>
       <VideosTable videos={videos} onEditVideo={onEditVideo} onDeleteVideo={onDeleteVideo} />
+
+      <Modal
+        title="Confirm delete"
+        isOpen={!!deleteVideoDialogOpen}
+        onClose={() => setDeleteVideoDialogOpen(undefined)}
+        onConfirm={onDeleteVideoConfirm}>
+        Are you sure you want to delete video "{deleteVideoDialogOpen?.name}"?
+      </Modal>
     </>
   );
 };

@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 export const useDebouncedState = <T,>(
   value: T,
   onChange?: (value: T) => void,
-  debounce: number = 1000
+  debounce: number = 500
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
