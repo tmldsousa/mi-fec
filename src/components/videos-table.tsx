@@ -1,6 +1,7 @@
 import type { ProcessedVideo } from '../common/interfaces';
 import { Button } from './common/button';
 import { Table } from './common/table';
+import styles from './videos-table.module.css';
 
 type VideosTableProps = {
   videos: ProcessedVideo[];
@@ -21,8 +22,12 @@ export const VideosTable = ({ videos, onEditVideo, onDeleteVideo }: VideosTableP
         header: 'Options',
         cell: (context) => (
           <div>
-            <Button onClick={onEditVideo ? () => onEditVideo(context.row.original) : undefined}>Edit</Button>
-            <Button onClick={onDeleteVideo ? () => onDeleteVideo(context.row.original) : undefined}>Delete</Button>
+            <Button onClick={onEditVideo ? () => onEditVideo(context.row.original) : undefined} className={styles.editButton}>
+              Edit
+            </Button>
+            <Button onClick={onDeleteVideo ? () => onDeleteVideo(context.row.original) : undefined} className={styles.deleteButton}>
+              Delete
+            </Button>
           </div>
         ),
       },

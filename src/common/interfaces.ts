@@ -17,6 +17,10 @@ export interface VideoFormats {
     size: number;
   };
 }
+export interface SubmitVideo extends Pick<Video, 'name' | 'catIds'> {
+  id?: number;
+  authorId: number;
+}
 
 export interface Author {
   id: number;

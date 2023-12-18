@@ -3,6 +3,7 @@ import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedR
 import { useDebouncedState } from '../../hooks/useDebouncedState';
 import styles from './table.module.css';
 import { Input } from './input';
+import { SortAscending, SortDescending } from '../icons';
 
 type TableProps<T> = {
   data: T[];
@@ -34,13 +35,21 @@ export const Table = <T,>({ data, columns }: TableProps<T>) => {
               return (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
+                    const canSort = header.column.getCanSort();
                     const sortDirection = header.column.getIsSorted();
+                    const sortingHandler = header.column.getToggleSortingHandler();
                     return (
-                      <th colSpan={header.colSpan} key={header.id} onClick={header.column.getToggleSortingHandler()}>
-                        {flexRender(header.column.columnDef.header, header.getContext())}
+                      <th
+                        colSpan={header.colSpan}
+                        key={header.id}
+                        onClick={sortingHandler}
+                        className={canSort ? styles.sortable : undefined}>
+                        <div>
+                          <span>{flexRender(header.column.columnDef.header, header.getContext())}</span>
 
-                        {/* Sorting indicator */}
-                        {sortDirection === 'asc' ? ' 🔼' : sortDirection === 'desc' ? ' 🔽' : null}
+                          {/* Sorting indicator */}
+                          <SortIndicator direction={sortDirection} />
+                        </div>
                       </th>
                     );
                   })}
@@ -61,6 +70,18 @@ export const Table = <T,>({ data, columns }: TableProps<T>) => {
           </tbody>
         </table>
       </div>
+    </div>
+  );
+};
+
+const SortIndicator = ({ direction }: { direction: 'asc' | 'desc' | false }) => {
+  return (
+    <div style={{ width: '24px', height: '24px', display: 'inline-block' }}>
+      {direction === 'asc' ? (
+        <SortAscending stroke="var(--primary)" />
+      ) : direction === 'desc' ? (
+        <SortDescending stroke="var(--primary)" />
+      ) : undefined}
     </div>
   );
 };

@@ -1,0 +1,9 @@
+.deleteButton {
+  color: var(--white);
+  background-color: var(--danger);
+}
+
+.editButton {
+  color: var(--white);
+  background-color: var(--info);
+}

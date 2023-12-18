@@ -11,14 +11,22 @@
 .table {
   width: 100%;
   border-spacing: 0;
-  border-width: 1px;
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  border-color: var(--border-color);
+}
+
+.sortable {
+  cursor: pointer;
+}
+.table th > div {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
 }
 
 .table th,
 .table td {
-  padding: calc(var(--spacing) * 2);
+  padding: calc(var(--spacing) * 1.5);
   text-align: left;
 }
 .table td {

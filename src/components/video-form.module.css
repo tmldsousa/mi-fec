@@ -1,0 +1,16 @@
+.stackLayout {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 2);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 1);
+}
+
+.fieldError {
+  font-size: 0.8rem;
+  color: var(--error);
+}

@@ -1,11 +1,35 @@
 .button {
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  color: var(--white);
+  font-size: 1rem;
+  padding: 0.5em 1.25em;
+  border-radius: var(--border-radius);
   cursor: pointer;
+  transition: all 0.33s ease;
+
+  color: var(--primary);
+  background: var(--light-gray);
+  border: 1px solid var(--light-gray);
+}
+
+.button:not(:disabled):hover {
+  filter: brightness(110%);
+}
+
+/* TODO: this is a layout concert, shouldn't do this */
+.button ~ .button {
+  margin-left: calc(var(--spacing));
+}
+
+.button:disabled {
+  pointer-events: none;
+  box-shadow: none;
+  color: var(--disabled-text);
+  border-color: var(--disabled-background);
+  background-color: var(--disabled-background);
+  cursor: inherit;
 }
 
 .primary {
-  background: var(--green);
+  color: var(--white);
+  background-color: var(--green);
+  border-color: var(--green);
 }

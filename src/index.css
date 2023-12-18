@@ -6,12 +6,17 @@
   --green: #00ab35;
   --primary: var(--green);
   --active: var(--primary);
+  --error: #d32f2f;
+  --danger: var(--error);
+  --info: #42a5f5;
+  --disabled-text: #999;
+  --disabled-background: var(--light-gray);
   --surface-background: var(--light-gray);
 
   /* units */
   --spacing: 8px;
-  --border-radius: 0.5rem;
-  --border-color: rgba(0, 0, 0, 0.2);
+  --border-radius: 8px;
+  --border-color: #cccccc;
 }
 
 body {

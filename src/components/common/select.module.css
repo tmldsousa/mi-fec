@@ -3,7 +3,7 @@
   display: inline-flex;
 }
 
-.wrapper > input {
+.wrapper > select {
   margin: 0;
   max-width: 100%;
   flex: 1 0 auto;
@@ -18,7 +18,7 @@
   border-radius: var(--border-radius);
 }
 
-.wrapper > input:active,
-.wrapper > input:focus {
+.wrapper > select:active,
+.wrapper > select:focus {
   border-color: var(--active);
 }

@@ -7,9 +7,5 @@ type ButtonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = ({ primary, ...props }: ButtonProps) => {
-  let className = styles.button;
-
-  if (primary) className += ` ${styles.primary}`;
-
-  return <button className={className} {...props} />;
+  return <button {...props} className={[styles.button, primary ? styles.primary : undefined, props.className].join(' ')} />;
 };
