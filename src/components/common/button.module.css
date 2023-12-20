@@ -14,11 +14,6 @@
   filter: brightness(110%);
 }
 
-/* TODO: this is a layout concert, shouldn't do this */
-.button ~ .button {
-  margin-left: calc(var(--spacing));
-}
-
 .button:disabled {
   pointer-events: none;
   box-shadow: none;

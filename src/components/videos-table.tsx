@@ -1,5 +1,6 @@
 import type { ProcessedVideo } from '../common/interfaces';
 import { Button } from './common/button';
+import { Stack } from './common/stack';
 import { Table } from './common/table';
 import styles from './videos-table.module.css';
 
@@ -21,14 +22,14 @@ export const VideosTable = ({ videos, onEditVideo, onDeleteVideo }: VideosTableP
       {
         header: 'Options',
         cell: (context) => (
-          <div>
+          <Stack>
             <Button onClick={onEditVideo ? () => onEditVideo(context.row.original) : undefined} className={styles.editButton}>
               Edit
             </Button>
             <Button onClick={onDeleteVideo ? () => onDeleteVideo(context.row.original) : undefined} className={styles.deleteButton}>
               Delete
             </Button>
-          </div>
+          </Stack>
         ),
       },
     ]}

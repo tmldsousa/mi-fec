@@ -1,11 +1,11 @@
 import { Formik, FormikHelpers } from 'formik';
 import { Author, Category, SubmitVideo } from '../common/interfaces';
-import { Input } from './common/input';
+import { Field, Input, Select } from './common/field';
 import { useCallback, useMemo } from 'react';
-import { Select } from './common/select';
-import styles from './video-form.module.css';
 import { Button } from './common/button';
 import { array, number, object, string } from 'yup';
+import { Stack } from './common/stack';
+import styles from './video-form.module.css';
 
 type VideoFormProps = {
   video?: SubmitVideo;
@@ -18,7 +18,7 @@ type VideoFormProps = {
 // SubmitVideo validation schema
 const validationSchema = object({
   name: string().required('Required'),
-  authorId: number().required('Required'),
+  authorId: number().moreThan(0, 'Required'),
   catIds: array().of(number()).min(1, 'Required'),
 });
 
@@ -54,13 +54,12 @@ export const VideoForm = ({ video, authors, categories, onSubmit, onCancel }: Vi
         return (
           <form onSubmit={handleSubmit}>
             <div className={styles.stackLayout}>
-              <div className={styles.formField}>
+              <Field error={touched.name && errors.name}>
                 <label htmlFor="name">Name</label>
                 <Input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} disabled={isSubmitting} />
-                {errors.name && touched.name && <span className={styles.fieldError}>{errors.name}</span>}
-              </div>
+              </Field>
 
-              <div className={styles.formField}>
+              <Field error={touched.authorId && errors.authorId}>
                 <label htmlFor="authorId">Author</label>
                 <Select
                   name="authorId"
@@ -68,16 +67,18 @@ export const VideoForm = ({ video, authors, categories, onSubmit, onCancel }: Vi
                   onBlur={handleBlur}
                   value={values.authorId}
                   disabled={isSubmitting}>
+                  <option key="" value="0">
+                    -- Select author --
+                  </option>
                   {authors.map((author) => (
                     <option key={author.id} value={author.id}>
                       {author.name}
                     </option>
                   ))}
                 </Select>
-                {errors.authorId && touched.authorId && <span className={styles.fieldError}>{errors.authorId}</span>}
-              </div>
+              </Field>
 
-              <div className={styles.formField}>
+              <Field error={touched.catIds && errors.catIds}>
                 <label htmlFor="catIds">Categories</label>
                 <Select
                   multiple
@@ -92,10 +93,9 @@ export const VideoForm = ({ video, authors, categories, onSubmit, onCancel }: Vi
                     </option>
                   ))}
                 </Select>
-                {errors.catIds && touched.catIds && <span className={styles.fieldError}>{errors.catIds}</span>}
-              </div>
+              </Field>
 
-              <div>
+              <Stack>
                 <Button type="submit" primary disabled={!dirty || !isValid || isSubmitting}>
                   Submit
                 </Button>
@@ -104,7 +104,7 @@ export const VideoForm = ({ video, authors, categories, onSubmit, onCancel }: Vi
                     Cancel
                   </Button>
                 )}
-              </div>
+              </Stack>
             </div>
           </form>
         );

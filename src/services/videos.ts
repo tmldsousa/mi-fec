@@ -31,7 +31,7 @@ export const createVideo = async (submitVideo: SubmitVideo) => {
   // New video initial data
   const newVideo = {
     id: Date.now(), // :) number id's are a bad idea anyway
-    releaseDate: format(new Date(), 'dd-MM-yyyy'),
+    releaseDate: format(new Date(), 'yyyy-MM-dd'),
     formats: {
       one: { res: '1080p', size: 1000 },
     },

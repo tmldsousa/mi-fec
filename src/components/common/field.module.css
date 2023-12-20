@@ -3,7 +3,7 @@
   display: inline-flex;
 }
 
-.wrapper > input {
+.fieldInput {
   margin: 0;
   max-width: 100%;
   flex: 1 0 auto;
@@ -13,12 +13,30 @@
   transition: all 0.33s ease;
   box-shadow: none;
   font-size: 1rem;
-
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
 }
 
-.wrapper > input:active,
-.wrapper > input:focus {
+.fieldInput:active,
+.fieldInput:focus {
   border-color: var(--active);
+}
+
+.field > label {
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.fieldError,
+.fieldError > label {
+  color: var(--danger);
+}
+.fieldError .fieldInput {
+  border-color: var(--danger) !important;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: var(--error);
 }

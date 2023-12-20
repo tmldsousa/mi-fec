@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { useDebouncedState } from '../../hooks/useDebouncedState';
+import { Input } from './field';
+import { SortIndicator } from './sort-indicator';
 import styles from './table.module.css';
-import { Input } from './input';
-import { SortAscending, SortDescending } from '../icons';
 
 type TableProps<T> = {
   data: T[];
@@ -70,18 +70,6 @@ export const Table = <T,>({ data, columns }: TableProps<T>) => {
           </tbody>
         </table>
       </div>
-    </div>
-  );
-};
-
-const SortIndicator = ({ direction }: { direction: 'asc' | 'desc' | false }) => {
-  return (
-    <div style={{ width: '24px', height: '24px', display: 'inline-block' }}>
-      {direction === 'asc' ? (
-        <SortAscending stroke="var(--primary)" />
-      ) : direction === 'desc' ? (
-        <SortDescending stroke="var(--primary)" />
-      ) : undefined}
     </div>
   );
 };

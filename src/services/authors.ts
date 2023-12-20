@@ -9,7 +9,10 @@ export const getAuthors = async (): Promise<Author[]> => {
 export const getAuthorById = async (authorId: Author['id']): Promise<Author | undefined> => {
   const response = await fetch(`${process.env.REACT_APP_API}/authors/${authorId}`);
 
-  return (await response.json()) as Author;
+  const author = (await response.json()) as Author;
+
+  // json-server returns an empty object if not found (we want undefined)
+  return Object.keys(author).length ? author : undefined;
 };
 
 export const updateAuthor = async (author: Author): Promise<boolean> => {
